@@ -19,11 +19,15 @@ paths:
         - $ref: '#/components/parameters/bsnPathParam'
       responses:
         '200':    # status code
-          description: A JSON array of user names
+          description: Een JSON arrya met persoonsgegevens
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Persoon'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
 
   /personen/{bsn}/contracten:
     get:
@@ -34,11 +38,15 @@ paths:
         - $ref: '#/components/parameters/bsnPathParam'
       responses:
         '200':    # status code
-          description: A JSON array of user names
+          description: Een JSON array met contracten
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Contract'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
 
   /personen/{bsn}/contracten/{id}:
     get:
@@ -106,36 +114,69 @@ components:
       properties:
         id:
           type: string
+          format: uuid
         voornaam:
           type: string
         tussenvoegsel:
           type: string
         achternaam:
           type: string
+        geboortedatum:
+          type: string
+          format: date
 
     # Contract
     Contract:
-      type: array
-      items:
-        type: string
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        contractNummer:
+          type: string
+        contractEindDatum:
+          type: string
+        contractKosten:
+          type: number
+        contractLeverancier:
+          type: string
+
 
     # Contractdetails
     ContractDetails:
-      type: array
-      items:
-        type: string
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
 
     # Logregel
     Logregel:
-      type: array
-      items:
-        type: string
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
 
     # LogregelDetails
     LogregelDetails:
-      type: array
-      items:
-        type: string
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+
+    # Schema for error response body
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
 
   # Reusable path, query, header and cookie parameters
   parameters:
@@ -145,13 +186,6 @@ components:
       schema:
         type: string
       required: true
-      examples:
-        9digitBsn:
-          summary: Voorbeeld van een bsn met 9 karakters
-          value: '123451234'
-        8digitBsn:
-          summary: Voorbeeld van een bsn met een voorloopnul
-          value: 012341234
 
   # Security scheme definitions (see Authentication), HTTP bearer
   securitySchemes:
@@ -163,22 +197,46 @@ components:
   # Reusable request bodies
   # requestBodies:
   #   ...
-  # # Reusable responses, such as 401 Unauthorized or 400 Bad Request
-  # responses:
-  #   ...
-  # # Reusable response headers
+
+  # Reusable responses, such as 401 Unauthorized or 400 Bad Request
+  responses:
+    # Response: Not Found
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    # Response Unauthorized
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  # Reusable response headers
   # headers:
   #   ...
-  # # Reusable examples
-  # examples:
-  #   ...
-  # # Reusable links
+
+  # Reusable examples
+  examples:
+    9digitBsn:
+      summary: Voorbeeld van een bsn met 9 karakters
+      value: 123451234
+    8digitBsn:
+      summary: Voorbeeld van een bsn met een voorloopnul
+      value: 012341234
+
+  # Reusable links
   # links:
   #   ...
-  # # Reusable callbacks
+
+  # Reusable callbacks
   # callbacks:
   #   ...
 
-# 2) Apply the security globally to all operations
+# Apply the security globally to all operations
 security:
-  - bearerAuth: []         # use the same name as above
+  - bearerAuth: []         # use the same name as the defined securityScheme
