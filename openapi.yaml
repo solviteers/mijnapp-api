@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: MijnApp
   description: Deze documentatie beschrijft de generieke MijnApp api.
-  version: 0.1.0
+  version: 0.2.0
 
 servers:
   - url: accp.example.com/api/v1
@@ -124,6 +124,9 @@ components:
         geboortedatum:
           type: string
           format: date
+      required:
+        - id
+        - achternaam
 
     # Contract
     Contract:
@@ -136,10 +139,16 @@ components:
           type: string
         contractEindDatum:
           type: string
+          nullable: true
         contractKosten:
           type: number
+          nullable: true
         contractLeverancier:
           type: string
+      required:
+        - id
+        - contractNummer
+
 
 
     # Contractdetails
