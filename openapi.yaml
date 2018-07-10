@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: MijnApp
   description: Deze documentatie beschrijft de generieke MijnApp api.
-  version: 0.2.0
+  version: 0.3.0
 
 servers:
   - url: accp.example.com/api/v1
@@ -150,7 +150,6 @@ components:
         - contractNummer
 
 
-
     # Contractdetails
     ContractDetails:
       type: object
@@ -158,6 +157,34 @@ components:
         id:
           type: string
           format: uuid
+        contractNummer:
+          type: string
+        contractEindDatum:
+          type: string
+          nullable: true
+        contractKosten:
+          type: number
+          nullable: true
+        contractLeverancier:
+          type: string
+        titel:
+          type: string
+        contractType:
+          type: string
+        contractOmschrijving:
+          type: string
+        contractStartdatum:
+          type: string
+        contractLeverancierLogo:
+          type: string
+          format: svg
+          description: svg
+        contractLeverancierTelefoonnummer:
+          type: string
+        contractLeverancierEmail:
+          type: string
+        contractLeverancierAdres:
+          $ref: '#/components/schemas/Adres'
 
     # Logregel
     Logregel:
@@ -166,6 +193,14 @@ components:
         id:
           type: string
           format: uuid
+        requesterUserId:
+          type: string
+        requesterApplicationId:
+          type: string
+        requesterProcessId:
+          type: string
+        requestedDataElements:
+          type: string
 
     # LogregelDetails
     LogregelDetails:
@@ -174,6 +209,19 @@ components:
         id:
           type: string
           format: uuid
+
+    #Adres
+    Adres:
+      type: object
+      properties:
+        straatnaam:
+          type: string
+        postcode:
+          type: string
+        huisnummer:
+          type: string
+        woonplaats:
+          type: string
 
     # Schema for error response body
     Error:
