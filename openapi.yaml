@@ -1,8 +1,9 @@
 openapi: 3.0.0
 info:
   title: MijnApp
-  description: Deze documentatie beschrijft de generieke MijnApp api.
-  version: 0.3.0
+  description: Deze documentatie beschrijft de generieke MijnApp api. Als uitgangspunt is de API-strategie van het DSO gebruikt.
+    [API en URI strategie DSO](https://aandeslagmetdeomgevingswet.nl/digitaal-stelsel/documenten/documenten/api-uri-strategie/)
+  version: 0.4.0
 
 servers:
   - url: accp.example.com/api/v1
@@ -20,6 +21,9 @@ paths:
       responses:
         '200':    # status code
           description: Een JSON arrya met persoonsgegevens
+          headers:
+            API-version:
+              $ref: '#/components/headers/API-version'
           content:
             application/json:
               schema:
@@ -45,6 +49,8 @@ paths:
                 $ref: '#/components/schemas/Contract'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
 
@@ -68,6 +74,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ContractDetails'
+              encoding:
+                contractLeverancierLogo:
+                  contentType: image/svg+xml
 
   /personen/{bsn}/logregels:
     get:
@@ -135,20 +144,20 @@ components:
         id:
           type: string
           format: uuid
-        contractNummer:
+          description: Unieke sleutel contract
+        identificatie:
           type: string
-        contractEindDatum:
+          description: Domeinspecifiek contractnummer, bijvoorbeeld polisnummer of zaakidentificatie
+        titel:
           type: string
-          nullable: true
-        contractKosten:
-          type: number
-          nullable: true
-        contractLeverancier:
+        omschrijving:
           type: string
+        organisatieNaam:
+          type: string
+          description: Naam leverancier
       required:
         - id
         - contractNummer
-
 
     # Contractdetails
     ContractDetails:
@@ -157,34 +166,43 @@ components:
         id:
           type: string
           format: uuid
-        contractNummer:
+          description: Unieke sleutel contract
+        identificatie:
           type: string
-        contractEindDatum:
-          type: string
-          nullable: true
-        contractKosten:
-          type: number
-          nullable: true
-        contractLeverancier:
-          type: string
+          description: Domeinspecifiek contractnummer, bijvoorbeeld polisnummer of zaakidentificatie
         titel:
           type: string
-        contractType:
+        omschrijving:
           type: string
-        contractOmschrijving:
+        beginDatum:
           type: string
-        contractStartdatum:
+          format: date
+          nullable: true
+          description: Ingangsdatum contract
+        eindDatum:
           type: string
-        contractLeverancierLogo:
+          format: date
+          nullable: true
+          description: Einddatum contract
+        type:
           type: string
-          format: svg
-          description: svg
-        contractLeverancierTelefoonnummer:
-          type: string
-        contractLeverancierEmail:
-          type: string
-        contractLeverancierAdres:
-          $ref: '#/components/schemas/Adres'
+          description: Soort contract. polis, identiteitsdocument, voorziening
+        kosten:
+          $ref: '#/components/schemas/Kosten'
+        organisatie:
+          $ref: '#/components/schemas/Organisatie'
+        extraVelden:
+          type: array
+          description: Vrij aan te bieden key-value pairs.
+          items:
+            type: string
+          minItems: 1
+          maxItems: 5
+      required:
+        - id
+        - identificatie
+        - titel
+        - beginDatum
 
     # Logregel
     Logregel:
@@ -193,14 +211,35 @@ components:
         id:
           type: string
           format: uuid
-        requesterUserId:
+        verwerker:
+          type: object
+          properties:
+            organisatie:
+              type: string
+            gebruikersId:
+              type: string
+            applicatieId:
+              type: string
+        procesId:
           type: string
-        requesterApplicationId:
+          description: ProcesId zoals gedefinieerd in NLX
+        procesOmschrijving:
           type: string
-        requesterProcessId:
+          description: Omschrijving proces
+        raadpleegDatumTijdstip:
           type: string
-        requestedDataElements:
+          format: date-time
+        opgevraagdeElementen:
           type: string
+          description: ombouwen naar array
+        verwerkingsType:
+          type: string
+          enum:
+            - C
+            - R
+            - U
+            - D
+            - E
 
     # LogregelDetails
     LogregelDetails:
@@ -214,14 +253,83 @@ components:
     Adres:
       type: object
       properties:
-        straatnaam:
+        bagIdentificatie:
           type: string
-        postcode:
-          type: string
-        huisnummer:
-          type: string
+          maxLength: 16
+          description: Verblijfsobjectidentificatie (BAG-elementcode 56.01)
         woonplaats:
           type: string
+          maxLength: 80
+        openbareRuimteNaam:
+          type: string
+          description: straatnaam volgens de BAG
+          maxLength: 80
+        postcode:
+          type: string
+          pattern: '[1-9][0-9]{3}[A-Z]{0,2}'
+          minLength: 6
+          maxLength: 6
+        huisnummer:
+          type: number
+          minimum: 1
+          maximum: 99999
+        huisletter:
+          type: string
+          pattern: '[a-zA-Z]'
+          maxLength: 1
+        huisnummerToevoeging:
+          type: string
+          pattern: '[a-zA-Z0-9]{0,4}'
+          maxLength: 4
+
+    #Kosten
+    Kosten:
+      type: object
+      properties:
+        bedrag:
+          type: number
+          description: bedrag in centen
+        eenheid:
+          type: string
+          enum:
+            - per maand
+            - per jaar
+            - per 4 weken
+            - per uur
+            - per minuut
+            - per dag
+
+    # Organisatie
+    Organisatie:
+      type: object
+      properties:
+        handelsnaam:
+          type: string
+          description: Organisatie die de dienst of het product levert
+        kvkNummer:
+          type: number
+          description: kvk-nummer
+          minLength: 8
+          maxLength: 8
+        vestigingsnummer:
+          type: number
+          description: vestigingsnummer
+          minLength: 12
+          maxLength: 12
+        logo:
+          type: string
+          format: svg
+          description: svg
+        telefoonnummer:
+          type: string
+        email:
+          type: string
+          format: email
+        adres:
+          $ref: '#/components/schemas/Adres'
+        extraVelden:
+          type: string
+          description: ombouwen naar array
 
     # Schema for error response body
     Error:
@@ -259,23 +367,32 @@ components:
   responses:
     # Response: Not Found
     NotFound:
-      description: The specified resource was not found
+      description: Not found, er is een niet-bestaande resource opgevraagd
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-
+    # Response: Forbidden
+    Forbidden:
+      description: Forbidden, de geverifieerde gebruiker heeft geen toegangsrechten voor de resource
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     # Response Unauthorized
     Unauthorized:
-      description: Unauthorized
+      description: Unauthorized, er zijn geen of ongeldige authenticatie details verstrekt.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
 
   # Reusable response headers
-  # headers:
-  #   ...
+  headers:
+    API-version:
+      description: semver versioning
+      schema:
+        type: string
 
   # Reusable examples
   examples:
