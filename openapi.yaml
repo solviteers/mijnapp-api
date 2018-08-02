@@ -1,13 +1,14 @@
 openapi: 3.0.0
 info:
-  title: MijnApp
-  description: Deze documentatie beschrijft de generieke MijnApp api. Als uitgangspunt is de API-strategie van het DSO gebruikt.
-    [API en URI strategie DSO](https://aandeslagmetdeomgevingswet.nl/digitaal-stelsel/documenten/documenten/api-uri-strategie/)
-  version: 0.4.0
+  title: MijnGegevens API
+  description: Deze documentatie beschrijft de generieke api voor het MijnApp-project van de gemeente Eindhoven. Als uitgangspunt is de API-strategie van het DSO gebruikt.
+    [API en URI strategie DSO](https://aandeslagmetdeomgevingswet.nl/digitaal-stelsel/documenten/documenten/api-uri-strategie/) genomen.
+    Gegevensdefinities zijn zoveel mogelijk overgenomen uit de relevante informatiemodellen, waaronder de BAG en de GBA.
+  version: 0.5.0
 
 servers:
-  - url: accp.example.com/api/v1
-    description: Acceptatie domein
+  - url: https://mijnapp.solviteers.nl/api/v1
+    description: Acceptatie omgeving
 
 paths:
   /personen/{bsn}:
@@ -124,15 +125,27 @@ components:
         id:
           type: string
           format: uuid
-        voornaam:
+        voornamen:
           type: string
-        tussenvoegsel:
+          maxLength: 200
+        voorvoegselGeslachtsnaam:
           type: string
-        achternaam:
+          maxLength: 10
+        geslachtsnaam:
           type: string
+          maxLength: 200
+        geslacht:
+          type: string
+          enum:
+            - M
+            - V
+            - O
         geboortedatum:
-          type: string
-          format: date
+          type: number
+          minLength: 8
+          maxLength: 8
+        bezoekAdres:
+          $ref: '#/components/schemas/Adres'
       required:
         - id
         - achternaam
@@ -211,6 +224,22 @@ components:
         id:
           type: string
           format: uuid
+        verwerkerOrganisatie:
+          type: string
+        procesOmschrijving:
+          type: string
+          description: Omschrijving proces
+        raadpleegDatumTijdstip:
+          type: string
+          format: date-time
+
+    # LogregelDetails
+    LogregelDetails:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
         verwerker:
           type: object
           properties:
@@ -240,14 +269,6 @@ components:
             - U
             - D
             - E
-
-    # LogregelDetails
-    LogregelDetails:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
 
     #Adres
     Adres:
