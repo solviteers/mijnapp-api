@@ -1,0 +1,7 @@
+# Response: Forbidden
+Forbidden:
+  description: Forbidden, de geverifieerde gebruiker heeft geen toegangsrechten voor de resource
+  content:
+    application/json:
+      schema:
+        $ref: schemas/error.yaml#/Error

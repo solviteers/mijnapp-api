@@ -1,0 +1,7 @@
+# Response Unavailable
+Unavailable:
+  description: Unavailable, de bron voor het leveren van de gegevens is niet bereikbaar.
+  content:
+    application/json:
+      schema:
+        $ref: schemas/error.yaml#/Error

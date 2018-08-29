@@ -4,7 +4,7 @@ info:
   description: Deze documentatie beschrijft de generieke api voor het MijnApp-project van de gemeente Eindhoven. Als uitgangspunt is de API-strategie van het DSO gebruikt.
     [API en URI strategie DSO](https://aandeslagmetdeomgevingswet.nl/digitaal-stelsel/documenten/documenten/api-uri-strategie/) genomen.
     Gegevensdefinities zijn zoveel mogelijk overgenomen uit de relevante informatiemodellen, waaronder de BAG en de GBA.
-  version: 0.6.7
+  version: 0.6.8
 
 servers:
   - url: https://mijnapp.solviteers.nl/api/{basePath}
@@ -33,13 +33,13 @@ paths:
               schema:
                 $ref: schemas/persoon.yaml#/Persoon
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: responses/unauthorized.yaml#/Unauthorized
         '403':
-          $ref: '#/components/responses/Forbidden'
+          $ref: responses/forbidden.yaml#/Forbidden
         '404':
-          $ref: responses/notfound.yaml#/NotFound
+          $ref: responses/not-found.yaml#/NotFound
         '503':
-          $ref: '#/components/responses/Unavailable'
+          $ref: responses/unavailable.yaml#/Unavailable
 
   /personen/{bsn}/contracten:
     get:
@@ -56,13 +56,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Contract'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: responses/unauthorized.yaml#/Unauthorized
         '403':
-          $ref: '#/components/responses/Forbidden'
+          $ref: responses/forbidden.yaml#/Forbidden
         '404':
-          $ref: responses/notfound.yaml#/NotFound
+          $ref: responses/not-found.yaml#/NotFound
         '503':
-          $ref: '#/components/responses/Unavailable'
+          $ref: responses/unavailable.yaml#/Unavailable
 
   /personen/{bsn}/contracten/{id}:
     get:
@@ -88,13 +88,13 @@ paths:
                 contractLeverancierLogo:
                   contentType: image/svg+xml
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: responses/unauthorized.yaml#/Unauthorized
         '403':
-          $ref: '#/components/responses/Forbidden'
+          $ref: responses/forbidden.yaml#/Forbidden
         '404':
-          $ref: responses/notfound.yaml#/NotFound
+          $ref: responses/not-found.yaml#/NotFound
         '503':
-          $ref: '#/components/responses/Unavailable'
+          $ref: responses/unavailable.yaml#/Unavailable
 
   /personen/{bsn}/logregels:
     get:
@@ -111,13 +111,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Logregel'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: responses/unauthorized.yaml#/Unauthorized
         '403':
-          $ref: '#/components/responses/Forbidden'
+          $ref: responses/forbidden.yaml#/Forbidden
         '404':
-          $ref: responses/notfound.yaml#/NotFound
+          $ref: responses/not-found.yaml#/NotFound
         '503':
-          $ref: '#/components/responses/Unavailable'
+          $ref: responses/unavailable.yaml#/Unavailable
 
   /personen/{bsn}/logregels/{id}:
     get:
@@ -140,18 +140,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/LogregelDetails'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: responses/unauthorized.yaml#/Unauthorized
         '403':
-          $ref: '#/components/responses/Forbidden'
+          $ref: responses/forbidden.yaml#/Forbidden
         '404':
-          $ref: responses/notfound.yaml#/NotFound
+          $ref: responses/not-found.yaml#/NotFound
         '503':
-          $ref: '#/components/responses/Unavailable'
+          $ref: responses/unavailable.yaml#/Unavailable
 
 components:
   # Reusable schemas (data models)
   schemas:
-
     # Contract
     Contract:
       type: object
@@ -287,34 +286,6 @@ components:
       scheme: bearer
       bearerFormat: JWT    # optional, arbitrary value for documentation purposes
 
-  # Reusable request bodies
-  # requestBodies:
-  #   ...
-
-  # Reusable responses, such as 401 Unauthorized or 400 Bad Request
-  responses:
-    # Response: Forbidden
-    Forbidden:
-      description: Forbidden, de geverifieerde gebruiker heeft geen toegangsrechten voor de resource
-      content:
-        application/json:
-          schema:
-            $ref: schemas/error.yaml#/Error
-    # Response Unauthorized
-    Unauthorized:
-      description: Unauthorized, er zijn geen of ongeldige authenticatie details verstrekt.
-      content:
-        application/json:
-          schema:
-            $ref: schemas/error.yaml#/Error
-    # Response Unavailable
-    Unavailable:
-      description: Unavailable, de bron voor het leveren van de gegevens is niet bereikbaar.
-      content:
-        application/json:
-          schema:
-            $ref: schemas/error.yaml#/Error
-
   # Reusable response headers
   headers:
     API-version:
@@ -330,14 +301,6 @@ components:
     8digitBsn:
       summary: Voorbeeld van een bsn met een voorloopnul
       value: 012341234
-
-  # Reusable links
-  # links:
-  #   ...
-
-  # Reusable callbacks
-  # callbacks:
-  #   ...
 
 # Apply the security globally to all operations
 security:

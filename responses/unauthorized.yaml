@@ -1,0 +1,7 @@
+# Response Unauthorized
+Unauthorized:
+  description: Unauthorized, er zijn geen of ongeldige authenticatie details verstrekt.
+  content:
+    application/json:
+      schema:
+        $ref: schemas/error.yaml#/Error
