@@ -1,0 +1,32 @@
+
+    # Persoon
+    Persoon:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        voornamen:
+          type: string
+          maxLength: 200
+        voorvoegselGeslachtsnaam:
+          type: string
+          maxLength: 10
+        geslachtsnaam:
+          type: string
+          maxLength: 200
+        geslacht:
+          type: string
+          enum:
+            - M
+            - V
+            - O
+        geboortedatum:
+          type: number
+          minLength: 8
+          maxLength: 8
+        bezoekAdres:
+          $ref: '#/components/schemas/Adres'
+      required:
+        - id
+        - achternaam
