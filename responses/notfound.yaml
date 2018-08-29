@@ -1,0 +1,7 @@
+# Response: Not Found
+NotFound:
+  description: Not found, er is een niet-bestaande resource opgevraagd
+  content:
+    application/json:
+      schema:
+        $ref: schemas/error.yaml#/Error

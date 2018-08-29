@@ -4,7 +4,7 @@ info:
   description: Deze documentatie beschrijft de generieke api voor het MijnApp-project van de gemeente Eindhoven. Als uitgangspunt is de API-strategie van het DSO gebruikt.
     [API en URI strategie DSO](https://aandeslagmetdeomgevingswet.nl/digitaal-stelsel/documenten/documenten/api-uri-strategie/) genomen.
     Gegevensdefinities zijn zoveel mogelijk overgenomen uit de relevante informatiemodellen, waaronder de BAG en de GBA.
-  version: 0.6.6
+  version: 0.6.7
 
 servers:
   - url: https://mijnapp.solviteers.nl/api/{basePath}
@@ -37,7 +37,7 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: responses/notfound.yaml#/NotFound
         '503':
           $ref: '#/components/responses/Unavailable'
 
@@ -60,7 +60,7 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: responses/notfound.yaml#/NotFound
         '503':
           $ref: '#/components/responses/Unavailable'
 
@@ -92,7 +92,7 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: responses/notfound.yaml#/NotFound
         '503':
           $ref: '#/components/responses/Unavailable'
 
@@ -115,7 +115,7 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: responses/notfound.yaml#/NotFound
         '503':
           $ref: '#/components/responses/Unavailable'
 
@@ -144,7 +144,7 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NotFound'
+          $ref: responses/notfound.yaml#/NotFound
         '503':
           $ref: '#/components/responses/Unavailable'
 
@@ -293,13 +293,6 @@ components:
 
   # Reusable responses, such as 401 Unauthorized or 400 Bad Request
   responses:
-    # Response: Not Found
-    NotFound:
-      description: Not found, er is een niet-bestaande resource opgevraagd
-      content:
-        application/json:
-          schema:
-            $ref: schemas/error.yaml#/Error
     # Response: Forbidden
     Forbidden:
       description: Forbidden, de geverifieerde gebruiker heeft geen toegangsrechten voor de resource
