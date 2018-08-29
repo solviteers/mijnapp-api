@@ -21,7 +21,7 @@ paths:
         - $ref: '#/components/parameters/bsnPathParam'
       responses:
         '200':    # status code
-          description: Een JSON arrya met persoonsgegevens
+          description: Een JSON array met persoonsgegevens
           headers:
             API-version:
               $ref: '#/components/headers/API-version'
@@ -165,9 +165,8 @@ components:
           type: string
         omschrijving:
           type: string
-        organisatieNaam:
-          type: string
-          description: Naam leverancier
+        organisatie:
+          $ref: '#/components/schemas/OrganisatieKort'
       required:
         - id
         - contractNummer
@@ -225,7 +224,7 @@ components:
           type: string
           format: uuid
         verwerkerOrganisatie:
-          type: string
+          $ref: '#/components/schemas/OrganisatieKort'
         procesOmschrijving:
           type: string
           description: Omschrijving proces
@@ -351,6 +350,18 @@ components:
         extraVelden:
           type: string
           description: ombouwen naar array
+
+    # OrganisatieKort
+    OrganisatieKort:
+      type: object
+      properties:
+        handelsnaam:
+          type: string
+          description: Organisatie die de dienst of het product levert
+        logo:
+          type: string
+          format: svg
+          description: svg
 
     # Schema for error response body
     Error:
