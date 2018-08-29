@@ -1,0 +1,6 @@
+bsnPathParam:
+  in: path
+  name: bsn
+  schema:
+    type: string
+  required: true
