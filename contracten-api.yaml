@@ -1,10 +1,10 @@
 openapi: 3.0.1
 info:
-  title: MijnGegevens API, gecombineerd
+  title: MijnGegevens API, contracten
   description: Deze documentatie beschrijft de generieke api voor het MijnApp-project van de gemeente Eindhoven. Als uitgangspunt is de API-strategie van het DSO gebruikt.
     [API en URI strategie DSO](https://aandeslagmetdeomgevingswet.nl/digitaal-stelsel/documenten/documenten/api-uri-strategie/) genomen.
     Gegevensdefinities zijn zoveel mogelijk overgenomen uit de relevante informatiemodellen, waaronder de BAG en de GBA.
-  version: 0.7.1
+  version: 0.7.0
 
 servers:
   - url: https://mijnapp.solviteers.nl/api/{basePath}
@@ -14,8 +14,6 @@ servers:
         default: v1
 
 paths:
-  - $ref: paths/persoon.yaml
-
   /personen/{bsn}/contracten:
     get:
       summary: Lijst met contracten
@@ -62,58 +60,6 @@ paths:
               encoding:
                 contractLeverancierLogo:
                   contentType: image/svg+xml
-        '401':
-          $ref: responses/unauthorized.yaml#/Unauthorized
-        '403':
-          $ref: responses/forbidden.yaml#/Forbidden
-        '404':
-          $ref: responses/not-found.yaml#/NotFound
-        '503':
-          $ref: responses/unavailable.yaml#/Unavailable
-
-  /personen/{bsn}/logregels:
-    get:
-      summary: Lijst met AVG logregels
-      tags:
-        - avg logregels
-      parameters:
-        - $ref: parameters/path-bsn.yaml#/bsnPathParam
-      responses:
-        '200':    # status code
-          description: A JSON array of user names
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Logregel'
-        '401':
-          $ref: responses/unauthorized.yaml#/Unauthorized
-        '403':
-          $ref: responses/forbidden.yaml#/Forbidden
-        '404':
-          $ref: responses/not-found.yaml#/NotFound
-        '503':
-          $ref: responses/unavailable.yaml#/Unavailable
-
-  /personen/{bsn}/logregels/{id}:
-    get:
-      summary: AVG logregeldetails
-      tags:
-        - avg logregels
-      parameters:
-        - $ref: parameters/path-bsn.yaml#/bsnPathParam
-        - in: path
-          name: id
-          schema:
-            type: integer
-          required: true
-          description: Contractidentificatie
-      responses:
-        '200':    # status code
-          description: A JSON array of user names
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LogregelDetails'
         '401':
           $ref: responses/unauthorized.yaml#/Unauthorized
         '403':
@@ -191,59 +137,6 @@ components:
         - identificatie
         - titel
         - beginDatum
-
-    # Logregel
-    Logregel:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        verwerkerOrganisatie:
-          $ref: schemas/organisatie.yaml#/OrganisatieKort
-        procesOmschrijving:
-          type: string
-          description: Omschrijving proces
-        raadpleegDatumTijdstip:
-          type: string
-          format: date-time
-
-    # LogregelDetails
-    LogregelDetails:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        verwerker:
-          type: object
-          properties:
-            organisatie:
-              $ref: schemas/organisatie.yaml#/OrganisatieKort
-            gebruikersId:
-              type: string
-            applicatieId:
-              type: string
-        procesId:
-          type: string
-          description: ProcesId zoals gedefinieerd in NLX
-        procesOmschrijving:
-          type: string
-          description: Omschrijving proces
-        raadpleegDatumTijdstip:
-          type: string
-          format: date-time
-        opgevraagdeElementen:
-          type: string
-          description: ombouwen naar array
-        verwerkingsType:
-          type: string
-          enum:
-            - C
-            - R
-            - U
-            - D
-            - E
 
   # Security scheme definitions (see Authentication), HTTP bearer
   securitySchemes:
