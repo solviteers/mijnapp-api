@@ -4,11 +4,14 @@ info:
   description: Deze documentatie beschrijft de generieke api voor het MijnApp-project van de gemeente Eindhoven. Als uitgangspunt is de API-strategie van het DSO gebruikt.
     [API en URI strategie DSO](https://aandeslagmetdeomgevingswet.nl/digitaal-stelsel/documenten/documenten/api-uri-strategie/) genomen.
     Gegevensdefinities zijn zoveel mogelijk overgenomen uit de relevante informatiemodellen, waaronder de BAG en de GBA.
-  version: 0.6.1
+  version: 0.6.2
 
 servers:
-  - url: https://mijnapp.solviteers.nl/api/v1
+  - url: https://mijnapp.solviteers.nl/api/{basePath}
     description: Acceptatie omgeving
+    variables:
+      basePath:
+        default: v1
 
 paths:
   /personen/{bsn}:
@@ -362,18 +365,6 @@ components:
           format: svg
           description: svg
 
-    # Schema for error response body
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-      required:
-        - code
-        - message
-
   # Reusable path, query, header and cookie parameters
   parameters:
     bsnPathParam:
@@ -416,7 +407,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: schemas/error.yaml#/Error
     # Response Unavailable
     Unavailable:
       description: Unavailable, de bron voor het leveren van de gegevens is niet bereikbaar.
