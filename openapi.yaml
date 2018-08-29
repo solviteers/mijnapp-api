@@ -4,7 +4,7 @@ info:
   description: Deze documentatie beschrijft de generieke api voor het MijnApp-project van de gemeente Eindhoven. Als uitgangspunt is de API-strategie van het DSO gebruikt.
     [API en URI strategie DSO](https://aandeslagmetdeomgevingswet.nl/digitaal-stelsel/documenten/documenten/api-uri-strategie/) genomen.
     Gegevensdefinities zijn zoveel mogelijk overgenomen uit de relevante informatiemodellen, waaronder de BAG en de GBA.
-  version: 0.6.2
+  version: 0.6.3
 
 servers:
   - url: https://mijnapp.solviteers.nl/api/{basePath}
@@ -202,7 +202,7 @@ components:
           type: string
           description: Soort contract. polis, identiteitsdocument, voorziening
         kosten:
-          $ref: '#/components/schemas/Kosten'
+          $ref: schemas/kosten.yaml#/Kosten
         organisatie:
           $ref: '#/components/schemas/Organisatie'
         extraVelden:
@@ -271,56 +271,6 @@ components:
             - D
             - E
 
-    #Adres
-    Adres:
-      type: object
-      properties:
-        bagIdentificatie:
-          type: string
-          maxLength: 16
-          description: Verblijfsobjectidentificatie (BAG-elementcode 56.01)
-        woonplaats:
-          type: string
-          maxLength: 80
-        openbareRuimteNaam:
-          type: string
-          description: straatnaam volgens de BAG
-          maxLength: 80
-        postcode:
-          type: string
-          pattern: '[1-9][0-9]{3}[A-Z]{0,2}'
-          minLength: 6
-          maxLength: 6
-        huisnummer:
-          type: number
-          minimum: 1
-          maximum: 99999
-        huisletter:
-          type: string
-          pattern: '[a-zA-Z]'
-          maxLength: 1
-        huisnummerToevoeging:
-          type: string
-          pattern: '[a-zA-Z0-9]{0,4}'
-          maxLength: 4
-
-    #Kosten
-    Kosten:
-      type: object
-      properties:
-        bedrag:
-          type: number
-          description: bedrag in centen
-        eenheid:
-          type: string
-          enum:
-            - per maand
-            - per jaar
-            - per 4 weken
-            - per uur
-            - per minuut
-            - per dag
-
     # Organisatie
     Organisatie:
       type: object
@@ -348,7 +298,7 @@ components:
           type: string
           format: email
         adres:
-          $ref: '#/components/schemas/Adres'
+          $ref: schemas/adres.yaml#/Adres
         extraVelden:
           type: string
           description: ombouwen naar array
@@ -393,14 +343,14 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: schemas/error.yaml#/Error
     # Response: Forbidden
     Forbidden:
       description: Forbidden, de geverifieerde gebruiker heeft geen toegangsrechten voor de resource
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: schemas/error.yaml#/Error
     # Response Unauthorized
     Unauthorized:
       description: Unauthorized, er zijn geen of ongeldige authenticatie details verstrekt.
@@ -414,7 +364,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: schemas/error.yaml#/Error
 
   # Reusable response headers
   headers:

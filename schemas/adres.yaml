@@ -1,0 +1,32 @@
+#Adres
+Adres:
+  type: object
+  properties:
+    bagIdentificatie:
+      type: string
+      maxLength: 16
+      description: Verblijfsobjectidentificatie (BAG-elementcode 56.01)
+    woonplaats:
+      type: string
+      maxLength: 80
+    openbareRuimteNaam:
+      type: string
+      description: straatnaam volgens de BAG
+      maxLength: 80
+    postcode:
+      type: string
+      pattern: '[1-9][0-9]{3}[A-Z]{0,2}'
+      minLength: 6
+      maxLength: 6
+    huisnummer:
+      type: number
+      minimum: 1
+      maximum: 99999
+    huisletter:
+      type: string
+      pattern: '[a-zA-Z]'
+      maxLength: 1
+    huisnummerToevoeging:
+      type: string
+      pattern: '[a-zA-Z0-9]{0,4}'
+      maxLength: 4

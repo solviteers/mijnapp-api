@@ -25,7 +25,7 @@ Persoon:
       minLength: 8
       maxLength: 8
     bezoekAdres:
-      $ref: '#/components/schemas/Adres'
+      $ref: adres.yaml#/Adres
   required:
     - id
     - achternaam

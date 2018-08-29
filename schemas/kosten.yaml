@@ -1,0 +1,16 @@
+#Kosten
+Kosten:
+  type: object
+  properties:
+    bedrag:
+      type: number
+      description: bedrag in centen
+    eenheid:
+      type: string
+      enum:
+        - per maand
+        - per jaar
+        - per 4 weken
+        - per uur
+        - per minuut
+        - per dag
