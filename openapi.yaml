@@ -4,7 +4,7 @@ info:
   description: Deze documentatie beschrijft de generieke api voor het MijnApp-project van de gemeente Eindhoven. Als uitgangspunt is de API-strategie van het DSO gebruikt.
     [API en URI strategie DSO](https://aandeslagmetdeomgevingswet.nl/digitaal-stelsel/documenten/documenten/api-uri-strategie/) genomen.
     Gegevensdefinities zijn zoveel mogelijk overgenomen uit de relevante informatiemodellen, waaronder de BAG en de GBA.
-  version: 0.6.3
+  version: 0.6.4
 
 servers:
   - url: https://mijnapp.solviteers.nl/api/{basePath}
@@ -271,38 +271,6 @@ components:
             - D
             - E
 
-    # Organisatie
-    Organisatie:
-      type: object
-      properties:
-        handelsnaam:
-          type: string
-          description: Organisatie die de dienst of het product levert
-        kvkNummer:
-          type: number
-          description: kvk-nummer
-          minLength: 8
-          maxLength: 8
-        vestigingsnummer:
-          type: number
-          description: vestigingsnummer
-          minLength: 12
-          maxLength: 12
-        logo:
-          type: string
-          format: svg
-          description: svg
-        telefoonnummer:
-          type: string
-        email:
-          type: string
-          format: email
-        adres:
-          $ref: schemas/adres.yaml#/Adres
-        extraVelden:
-          type: string
-          description: ombouwen naar array
-
     # OrganisatieKort
     OrganisatieKort:
       type: object
@@ -314,6 +282,33 @@ components:
           type: string
           format: svg
           description: svg
+
+    # Organisatie
+    Organisatie:
+      allOf:
+      - $ref: '#/components/schemas/OrganisatieKort'
+      - type: object
+        properties:
+          kvkNummer:
+            type: number
+            description: kvk-nummer
+            minLength: 8
+            maxLength: 8
+          vestigingsnummer:
+            type: number
+            description: vestigingsnummer
+            minLength: 12
+            maxLength: 12
+          telefoonnummer:
+            type: string
+          email:
+            type: string
+            format: email
+          adres:
+            $ref: schemas/adres.yaml#/Adres
+          extraVelden:
+            type: string
+            description: ombouwen naar array
 
   # Reusable path, query, header and cookie parameters
   parameters:
