@@ -1,0 +1,38 @@
+# OrganisatieKort
+OrganisatieKort:
+  type: object
+  properties:
+    handelsnaam:
+      type: string
+      description: Organisatie die de dienst of het product levert
+    logo:
+      type: string
+      format: svg
+      description: svg
+
+# Organisatie
+Organisatie:
+  allOf:
+  - $ref: '#/OrganisatieKort'
+  - type: object
+    properties:
+      kvkNummer:
+        type: number
+        description: kvk-nummer
+        minLength: 8
+        maxLength: 8
+      vestigingsnummer:
+        type: number
+        description: vestigingsnummer
+        minLength: 12
+        maxLength: 12
+      telefoonnummer:
+        type: string
+      email:
+        type: string
+        format: email
+      adres:
+        $ref: adres.yaml#/Adres
+      extraVelden:
+        type: string
+        description: ombouwen naar array
