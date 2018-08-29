@@ -4,7 +4,7 @@ info:
   description: Deze documentatie beschrijft de generieke api voor het MijnApp-project van de gemeente Eindhoven. Als uitgangspunt is de API-strategie van het DSO gebruikt.
     [API en URI strategie DSO](https://aandeslagmetdeomgevingswet.nl/digitaal-stelsel/documenten/documenten/api-uri-strategie/) genomen.
     Gegevensdefinities zijn zoveel mogelijk overgenomen uit de relevante informatiemodellen, waaronder de BAG en de GBA.
-  version: 0.6.5
+  version: 0.6.6
 
 servers:
   - url: https://mijnapp.solviteers.nl/api/{basePath}
@@ -204,7 +204,7 @@ components:
         kosten:
           $ref: schemas/kosten.yaml#/Kosten
         organisatie:
-          $ref: schemas/organisatie.yaml#/Organisatie'
+          $ref: schemas/organisatie.yaml#/Organisatie
         extraVelden:
           type: array
           description: Vrij aan te bieden key-value pairs.
@@ -226,7 +226,7 @@ components:
           type: string
           format: uuid
         verwerkerOrganisatie:
-          $ref: schemas/organisatie.yaml#/OrganisatieKort'
+          $ref: schemas/organisatie.yaml#/OrganisatieKort
         procesOmschrijving:
           type: string
           description: Omschrijving proces
@@ -245,7 +245,7 @@ components:
           type: object
           properties:
             organisatie:
-              type: string
+              $ref: schemas/organisatie.yaml#/OrganisatieKort
             gebruikersId:
               type: string
             applicatieId:
