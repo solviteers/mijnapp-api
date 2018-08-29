@@ -16,9 +16,9 @@ get:
           schema:
             $ref: ../schemas/persoon.yaml#/Persoon
     '401':
-      $ref: ../responses/unauthorized.yaml#/Unauthorized
+      $ref: '../responses/unauthorized.yaml#/Unauthorized'
     '403':
-      $ref: ../responses/forbidden.yaml#/Forbidden
+      $ref: responses/forbidden.yaml#/Forbidden
     '404':
       $ref: ../responses/not-found.yaml#/NotFound
     '503':
