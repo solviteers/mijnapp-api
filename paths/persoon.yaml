@@ -1,27 +1,24 @@
- GetPersoon:
-  /personen/{bsn}:
-    get:
-      summary: Persoondetails
-      operationId: getUserByBsn
-      tags:
-        - personen
-      parameters:
-        - $ref: parameters/path-bsn.yaml#/bsnPathParam
-      responses:
-        '200':    # status code
-          description: Een JSON array met persoonsgegevens
-          headers:
-            API-version:
-              $ref: headers/api-version.yaml#/API-version
-          content:
-            application/json:
-              schema:
-                $ref: schemas/persoon.yaml#/Persoon
-        '401':
-          $ref: responses/unauthorized.yaml#/Unauthorized
-        '403':
-          $ref: responses/forbidden.yaml#/Forbidden
-        '404':
-          $ref: responses/not-found.yaml#/NotFound
-        '503':
-          $ref: responses/unavailable.yaml#/Unavailable
+summary: Persoondetails
+operationId: getUserByBsn
+tags:
+  - personen
+parameters:
+  - $ref: parameters/path-bsn.yaml#/bsnPathParam
+responses:
+  '200':    # status code
+    description: Een JSON array met persoonsgegevens
+    headers:
+      API-version:
+        $ref: headers/api-version.yaml#/API-version
+    content:
+      application/json:
+        schema:
+          $ref: schemas/persoon.yaml#/Persoon
+  '401':
+    $ref: responses/unauthorized.yaml#/Unauthorized
+  '403':
+    $ref: responses/forbidden.yaml#/Forbidden
+  '404':
+    $ref: responses/not-found.yaml#/NotFound
+  '503':
+    $ref: responses/unavailable.yaml#/Unavailable
