@@ -17,6 +17,29 @@ paths:
   /personen/{bsn}:
     $ref: paths/persoon.yaml
 
+  /personen/{bsn}/authentieke-inkomens-gegevens:
+    get:
+      summary: Basisregistratie inkomen, levert het Authentiek Inkomensgegeven (AIG)
+      tags:
+        - bri
+      parameters:
+        - $ref: parameters/path-bsn.yaml#/bsnPathParam
+      responses:
+        '200':    # status code
+          description: Een JSON array met contracten
+          content:
+            application/json:
+              schema:
+                $ref: ./schemas/authentiekInkomen.yaml#/AuthentiekInkomen
+        '401':
+          $ref: responses/unauthorized.yaml#/Unauthorized
+        '403':
+          $ref: responses/forbidden.yaml#/Forbidden
+        '404':
+          $ref: responses/not-found.yaml#/NotFound
+        '503':
+          $ref: responses/unavailable.yaml#/Unavailable
+
   /personen/{bsn}/contracten:
     get:
       summary: Lijst met contracten
@@ -147,6 +170,45 @@ components:
       required:
         - id
         - contractNummer
+
+    AuthentiekInkomen:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unieke sleutel authentiek inkomen
+        jaar:
+          type: number
+          description: jaartal in vier cijfers
+        inkomen:
+          type: number
+          description: bedrag in centen
+        grondslagCode:
+          type: string
+          enum:
+            - G01
+            - G02
+            - G03
+            - G04
+          description: De grondslag op basis waarvan het inkomen is vastgesteld
+        grondslagOmschrijving:
+          type: string
+          description: de tekstuele toelichting bij de grondslagCode
+        statusCode:
+          type: string
+          enum:
+            - VVS1
+            - VST1
+            - VST2
+            - VST3
+            - VST4
+          description: De status van vaststelling van het inkomen
+        statusOmschrijving:
+          type: string
+          description: De tekstuele toelichting bij de statusCode
+        toelichting:
+          type: string
 
     # Contractdetails
     ContractDetails:

@@ -1,0 +1,40 @@
+# Authentiek Inkomen, ontleend aan de basisregistratie inkomen (BRI)
+
+AuthentiekInkomen:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+      description: Unieke sleutel authentiek inkomen
+    jaar:
+      type: number
+      description: jaartal in vier cijfers
+    inkomen:
+      type: number
+      description: bedrag in centen
+    grondslagCode:
+      type: string
+      enum:
+        - G01
+        - G02
+        - G03
+        - G04
+      description: De grondslag op basis waarvan het inkomen is vastgesteld
+    grondslagOmschrijving:
+      type: string
+      description: de tekstuele toelichting bij de grondslagCode
+    statusCode:
+      type: string
+      enum:
+        - VVS1
+        - VST1
+        - VST2
+        - VST3
+        - VST4
+      description: De status van vaststelling van het inkomen
+    statusOmschrijving:
+      type: string
+      description: De tekstuele toelichting bij de statusCode
+    toelichting:
+      type: string
